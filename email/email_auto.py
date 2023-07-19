@@ -27,7 +27,7 @@ def create_email_content(template: str, name: str, linkedin_url: str, mentoring_
     return template.format(name=name, linkedin_url=linkedin_url, mentoring_track=mentoring_track)
 
 def main(dry_run: Optional[bool] = False) -> None:
-    df = pd.read_csv('data.csv')
+    df = pd.read_csv(APPLICANTS_FILEPATH)
     with open('template.html', 'r') as f:
         template = f.read()
 
