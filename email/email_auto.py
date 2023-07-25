@@ -10,8 +10,9 @@ YEAR = date.today().year
 ORG_NAME = "" 
 MENTOR_EMAIL_SUBJECT = f"[ACTION NEEDED] - Mentee assignments {SEASON} {YEAR}"
 
-ASSIGNMENTS_FILEPATH = "assignments.csv"
-APPLICANTS_FILEPATH = "applications.csv"
+DATA_DIR = "data"
+ASSIGNMENTS_FILEPATH = f"{DATA_DIR}/assignments.csv"
+APPLICANTS_FILEPATH = f"{DATA_DIR}/applications.csv"
 
 def send_email(user: str, password: str, recipient: str, subject: str, content: str, dry_run: Optional[bool] = False) -> None:
     if dry_run:

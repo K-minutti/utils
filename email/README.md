@@ -8,6 +8,14 @@ This script allows you to do a dry run by setting the dry_run variable at the bo
 
 In your html template file, use {name}, {linkedin_url}, and {mentoring_track} to indicate where the 'Name', 'LinkedIn URL', and 'Mentoring track' should be placed in the email.
 
+TODO: 
+Update such that the only inputs are the following 
+Subject
+CVS 
+Text - with {variables}
+
+
+
 ## Libraries Used
 
 - `pandas`: Used to read and manage data from CSV files.
