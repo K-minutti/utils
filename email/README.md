@@ -1,64 +1,69 @@
-# Email Automation with Python
+# Automated Email Sender
 
-This Python script sends personalized email messages to a list of recipients. It uses the `yagmail` library to send emails from a Gmail account and `pandas` to read recipient information from a CSV file.
-Before running the script, replace 'data.csv' with your csv or excel file name, 'template.html' with your html template file and replace your-email@gmail.com and your-password with your actual Gmail email and password. You might need to allow less secure apps to access your Gmail account, which you can do in your account settings under "Security". Be aware that this could make your account less secure.
-Remember to replace 'data.csv' with your csv or excel file name and 'template.html' with your html template file in the Python script.
+Script to send personalized emails to multiple recipients using a CSV file and a customizable email body template. It features a Streamlit-based user interface that enables the selection of CSV files, input of email subjects, and creation of **email body** content with variable interpolation. A dry-run option is also available to inspect the interpolated emails without actually sending them.
 
-This script allows you to do a dry run by setting the dry_run variable at the bottom of the script to True. In this mode, the script prints the emails that would be sent but doesn't actually send them. To actually send the emails, you would set dry_run to False. This should make it easy to test the script and verify the email content before actually sending the emails.
+## Dependencies
+- Python 3.9 or higher
+- Streamlit
+- Pandas
+- yagmail
 
-In your html template file, use {name}, {linkedin_url}, and {mentoring_track} to indicate where the 'Name', 'LinkedIn URL', and 'Mentoring track' should be placed in the email.
+You can install these dependencies using the following commands:
+```bash
+pip install streamlit pandas yagmail
+```
+## Environment Variables
+Make sure to set the following environment variables:
+- `GMAIL_USER`: Your Gmail username
+- `GMAIL_PASSWORD`: Your Gmail password or App Password if 2FA is enabled
 
-TODO: 
-Update such that the only inputs are the following 
-Subject
-CVS 
-Text - with {variables}
+**Note** If you don't want to set environment variables you can also hardcode the credentials in the main function on lines 54-55 within the main.py file.
+
+## Notes
+- **Running the Script:** Run the script with the command: `streamlit run main.py`
+- **CSV Header Requirements:** CSV headers should be camelcase, snakecase, or any case without spaces.
+- **Dry-Run Option:** Use the dry-run option in the UI to inspect the interpolated emails without actually sending them. This helps verify the email content before dispatching.
+- **Data Directory:** Ensure that a directory named 'data' exists in the same directory as the script. Place your CSV files within this directory.
 
 
+## Usage
+1. Create a directory named 'data' in the same directory as `main.py`. (should already exist)
+2. Prepare a CSV file with the recipient's information, including email addresses, and place it in the "data" directory.
+3. Customize the email body with placeholders, such as `{name}`, `{mentoring_track}`, etc., matching the CSV headers. Create the email body in a separate text or HTML file. When ready, copy and paste the email body into the input box in the Streamlit app.
+4. CD into the current directory and run the script with the command `streamlit run main.py`
+4.1 This will open a streamlit UI in your browser usually at http://localhost:8501/
+5. Select the CSV file, input the email subject and body, and click "Send Emails."
+6. Use the dry-run option if you want to preview the emails before sending.
 
-## Libraries Used
 
-- `pandas`: Used to read and manage data from CSV files.
-- `yagmail`: Simplifies sending emails through a Gmail account.
+## Example
+Given the following CSV at the path data/data.csv
+| email            | mentor  | linkedIn_url  | mentoring_track | time_commitment |
+|------------------|---------|---------------|-----------------|-----------------|
+| min70@gmail.com    | Kevin   | https://url1  | Data Science            | 1-2             |
+| min60@columbia.edu  | KevinCU | https://url2  | Grad School            | 5               |
+| min70@gmail.com    | Other   | none          | Compilers            | 2-4             |
 
-## How to Run the Script
+A valid email body would be - (if you include a variable that does not exist in the csv headers you will be warned)
+```
+Hello {mentor},
 
-1. Install the necessary Python libraries with pip:
+LinkedIn Profile: {linkedIn_url}
 
-    ```
-    pip install pandas yagmail
-    ```
+You chose the mentoring track: {mentoring_track}
+```
 
-2. Set the Gmail username and password as environment variables:
+And would result in for the following email for the first row
+```
+Hello Kevin,
 
-    ```
-    export GMAIL_USER=your-email@gmail.com 
-    export GMAIL_PASSWORD=your-password
-    # or if you're on windows
-    set GMAIL_USER=your-email@gmail.com 
-    set GMAIL_PASSWORD=your-password
-    ```
+LinkedIn Profile: https://url1
 
-    Replace `your-email@gmail.com` and `your-password` with your actual Gmail email and password.
-
-3. Update the 'data.csv' filename if your csv or excel file has a different name or is in a different directory.
-
-4. Update 'template.html' with the name of your HTML template file, if it's different.
-
-5. To do a dry run without actually sending emails, make sure the `dry_run` variable in the script is set to `True`. To actually send emails, set it to `False`.
-
-6. Run the script:
-
-    ```
-    python email_auto.py
-    ```
+You chose the mentoring track: Data Science
+```
 
 ## Troubleshooting
-
-1. If you encounter issues with logging in to your Gmail account, make sure you have enabled "Less secure app access" in your Google account settings. Note that this may pose a security risk and you might want to consider using a dedicated Gmail account for sending these emails.
-
-2. If you get an error about a missing library, make sure you have installed all the necessary libraries with pip.
-
-3. If you get an error about a missing file, make sure the CSV file and HTML template file are in the same directory as the script, or update the file paths in the script to match their actual locations.
-
-4. If you get an error about the Gmail username or password not being set, make sure you have set them as environment variables as described in the "How to Run the Script" section.
+- **Missing "Email" Column:** Ensure that the CSV file contains an "Email" column.
+- **Invalid Headers:** Check that CSV headers do not contain invalid characters (`{`, `}`, or spaces).
+- **Empty or NaN Values:** Verify that the CSV file does not contain NaN or empty values.
+- **Email Sending Issues:** Make sure the Gmail credentials are correct and that "Less secure apps" are allowed in your Gmail account settings. If 2FA is enabled, use an App Password for `GMAIL_PASSWORD`.
